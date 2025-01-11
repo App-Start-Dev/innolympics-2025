@@ -17,7 +17,7 @@ import {
 } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { auth, provider } from "@/configs/firebase.config";
-import { setCookie, deleteCookie } from 'cookies-next';
+import { setCookie, deleteCookie } from "cookies-next";
 
 interface AuthContextType {
   user: User | null;
@@ -41,7 +41,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       setUser(user);
       setLoading(false);
 
-      if (user) {
+      if (user && !window.location.pathname.includes("/dashboard")) {
         router.push(`/dashboard/${user.uid}`);
       }
     });
@@ -53,9 +53,9 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     try {
       const response = await signInWithPopup(auth, provider);
       const token = await response.user.getIdToken();
-     setCookie('firebase_token', token, {
+      setCookie("firebase_token", token, {
         maxAge: 60 * 60,
-        sameSite: 'lax',
+        sameSite: "lax",
       });
     } catch (error) {
       alert("Failed to sign in with Google");
@@ -66,9 +66,9 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
       const token = await response.user.getIdToken();
-     setCookie('firebase_token', token, {
+      setCookie("firebase_token", token, {
         maxAge: 60 * 60,
-        sameSite: 'lax',
+        sameSite: "lax",
       });
     } catch (error) {
       alert("Failed to sign in with email and password");
@@ -86,7 +86,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const logout = async () => {
     try {
       await signOut(auth);
-      deleteCookie('firebase_token');
+      deleteCookie("firebase_token");
       router.push("/");
     } catch (error) {
       alert("Failed to sign out");

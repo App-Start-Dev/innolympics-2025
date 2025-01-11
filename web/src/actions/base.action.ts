@@ -2,11 +2,10 @@
 import api from "@/configs/axios.config";
 
 export const getBase = async () => {
-    try {
-        const response = await api.get("/");
-        return response 
-    }
-    catch (error) {
-        return error
-    }
-}
+  try {
+    const response = await api.get("/");
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
