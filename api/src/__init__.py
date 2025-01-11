@@ -8,6 +8,7 @@ from src.config import Config
 from src.middlewares.auth_middleware import authenticate_token
 from src.controllers.note_controller import note_blueprint
 from src.controllers.base_controller import base_blueprint
+from src.controllers.ai_controller import ai_blueprint
 from src.utils import register_blueprints
 
 def create_app():
@@ -21,7 +22,8 @@ def create_app():
     base_blueprint.before_request(authenticate_token)  
     note_blueprint.before_request(authenticate_token)  
 
-    blueprints =[note_blueprint, base_blueprint]
+
+    blueprints =[note_blueprint, base_blueprint, ai_blueprint]
     register_blueprints(app, blueprints, url_prefix='/api')
     
 
