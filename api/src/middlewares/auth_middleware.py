@@ -11,8 +11,7 @@ def authenticate_token():
         token = token.split(' ')[1]
         decoded_token = auth.verify_id_token(token)
         request.user = decoded_token
+        return None  # Allow the request to continue
 
     except Exception as e:
         return jsonify({"error": f"Token verification failed: {str(e)}"}), 401
-
-

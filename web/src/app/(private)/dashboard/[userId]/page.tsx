@@ -8,7 +8,7 @@ export default async function Page() {
     redirect("/auth");
   }
   const response = await getBase();
-  console.log(response.message);
+  console.log(response);
 
   return (
     <div>
