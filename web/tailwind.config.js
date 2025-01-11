@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import { COLORS } from './src/configs/colors';
+
 module.exports = {
     darkMode: ['class'],
     content: ['./src/**/*.{html,js,jsx,ts,tsx}', './public/index.html'],
@@ -50,6 +52,12 @@ module.exports = {
                     4: 'hsl(var(--chart-4))',
                     5: 'hsl(var(--chart-5))',
                 },
+                primary: COLORS.primary,
+                secondary: COLORS.secondary,
+                tertiary: COLORS.tertiary,
+                gray: COLORS.gray,
+                white: COLORS.white,
+                black: COLORS.black,
             },
         },
     },

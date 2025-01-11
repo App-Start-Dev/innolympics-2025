@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
-import './globals.css';
+import '../../app/globals.css';
 import { AuthProvider } from '@/providers/auth.provider';
 import { Navbar } from '@/components/common/navbar.common';
 import { Footer } from '@/components/common/footer.common';
@@ -22,13 +22,12 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" className={`${poppins.variable}`}>
-            <AuthProvider>
-                <body className="relative flex flex-col min-h-screen antialiased">
-                    <main className="flex-grow px-4 w-full">{children}</main>
-                    <Footer />
-                </body>
-            </AuthProvider>
-        </html>
+        <AuthProvider>
+            <div className="relative flex flex-col min-h-screen antialiased">
+                <Navbar />
+                <main className="flex-grow px-4 w-full">{children}</main>
+                <Footer />
+            </div>
+        </AuthProvider>
     );
 }

@@ -41,8 +41,8 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
             setUser(user);
             setLoading(false);
 
-            if (user && !window.location.pathname.includes('/dashboard')) {
-                router.push(`/dashboard/${user.uid}`);
+            if (user && !window.location.pathname.includes('/home')) {
+                router.push(`/home/${user.uid}`);
             }
         });
 
@@ -57,7 +57,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
                 maxAge: 60 * 60,
                 sameSite: 'lax',
             });
-            router.push(`/dashboard/${response.user.uid}`);
+            router.push(`/home/${response.user.uid}`);
         } catch (error) {
             alert('Failed to sign in with Google');
         }
