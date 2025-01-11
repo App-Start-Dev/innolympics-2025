@@ -8,8 +8,12 @@ export default async function Page() {
     }
 
     return (
-        <div>
-            <p>Dashboard</p>
+        <div className="h-svh flex w-full max-w-screen-2xl flex-col">
+            <div>
+                <span>How can I help you?</span>
+                <span>Select a category or type your question</span>
+            </div>
+            <span>CHILD</span>
         </div>
     );
 }

@@ -1,20 +1,24 @@
-import ChildModal from '@/forms/child';
-export default async function Home() {
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useAuth } from '@/providers/auth.provider';
+import { User } from 'firebase/auth';
+
+export default function Home() {
+    const [userAccount, setUserAccount] = useState<User | null>(null);
+    const { user, logout, loginWithGoogle } = useAuth();
+
+    useEffect(() => {
+        setUserAccount(user);
+    }, [user]);
+
     return (
-        <div>
-            <h1 className="text-4xl font-bold text-center mt-8">
-                Welcome to Alix
-            </h1>
-            <ChildModal />
-            <ChildModal
-                initialData={{
-                    name: 'John',
-                    birthday: new Date(),
-                    sex: 'male',
-                    asdType: 'none',
-                }}
-                isUpdate
-            />
+        <div className="h-svh flex flex-col items-center justify-center">
+            {userAccount ? (
+                <button onClick={logout}>Sign Out</button>
+            ) : (
+                <button onClick={loginWithGoogle}>Sign In</button>
+            )}
         </div>
     );
 }

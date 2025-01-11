@@ -9,77 +9,109 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { LayoutDashboard, LogOut } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/providers/auth.provider';
 import { User } from 'firebase/auth';
 import { Button } from '@/components/ui/button';
+import { FaBars } from 'react-icons/fa6';
 
 export function Navbar() {
     const [userAccount, setUserAccount] = useState<User | null>(null);
     const { user, logout, loginWithGoogle } = useAuth();
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const sidebarRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         setUserAccount(user);
     }, [user]);
+
+    const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            const target = event.target as Node;
+            if (sidebarRef.current && !sidebarRef.current.contains(target)) {
+                setIsSidebarOpen(false);
+            }
+        };
+
+        if (isSidebarOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isSidebarOpen]);
+
     return (
-        <nav className="border-b">
-            <div className="flex items-center justify-between max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16">
-                <div className="flex-shrink-0">
-                    <Link href="/" className="text-2xl font-bold">
-                        Alix
-                    </Link>
-                </div>
-                <div className="flex items-center">
-                    {user !== null ? (
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button
-                                    variant="ghost"
-                                    className="relative h-8 w-8 rounded-full"
+        <nav className="">
+            <div className="flex justify-end">
+                <button
+                    className=" text-black transition-all duration-200 ease-in-out p-4"
+                    onClick={toggleSidebar}
+                >
+                    <FaBars size={20} />
+                </button>
+
+                <div
+                    ref={sidebarRef}
+                    className={`xl:hidden fixed top-0 right-0 h-screen w-64 rounded-l-3xl bg-white z-30 transform shadow-xl ${
+                        isSidebarOpen ? 'translate-x-0' : 'translate-x-full'
+                    } transition-transform duration-200`}
+                >
+                    <button
+                        className="absolute top-4 right-6 text-black opacity-50 hover:opacity-100 text-3xl transition-all duration-200 ease-in-out"
+                        onClick={toggleSidebar}
+                    >
+                        &times;
+                    </button>
+                    <div className="p-6">
+                        <ul className="space-y-4">
+                            <li>
+                                <Link
+                                    href={`/home/${userAccount?.uid}`}
+                                    className="block text-lg font-medium text-gray-700 hover:text-blue-500"
                                 >
-                                    <Avatar className="h-8 w-8">
-                                        <AvatarImage
-                                            src={
-                                                userAccount?.photoURL ??
-                                                undefined
-                                            }
-                                            alt="User"
-                                        />
-                                        <AvatarFallback>
-                                            {userAccount?.displayName}
-                                        </AvatarFallback>
-                                    </Avatar>
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent
-                                className="w-56"
-                                align="end"
-                                forceMount
-                            >
-                                <DropdownMenuItem asChild>
-                                    <Link
-                                        href={`/dashboard/${userAccount?.uid}`}
-                                        className="flex items-center"
+                                    Home
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    href={`/dashboard/${userAccount?.uid}`}
+                                    className="block text-lg font-medium text-gray-700 hover:text-blue-500"
+                                >
+                                    Dashboard
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    href="/knowledge-base"
+                                    className="block text-lg font-medium text-gray-700 hover:text-blue-500"
+                                >
+                                    Knowledge Base
+                                </Link>
+                            </li>
+                            <li>
+                                {userAccount ? (
+                                    <button
+                                        onClick={logout}
+                                        className="w-full text-left text-lg font-medium text-red-500 hover:text-red-600"
                                     >
-                                        <LayoutDashboard className="mr-2 h-4 w-4" />
-                                        <span>Dashboard</span>
-                                    </Link>
-                                </DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem onClick={logout}>
-                                    <LogOut className="mr-2 h-4 w-4" />
-                                    <span>Sign out</span>
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    ) : (
-                        <Button
-                            variant="default"
-                            onClick={() => loginWithGoogle()}
-                        >
-                            Sign in
-                        </Button>
-                    )}
+                                        Sign Out
+                                    </button>
+                                ) : (
+                                    <Button
+                                        variant="default"
+                                        onClick={loginWithGoogle}
+                                        className="w-full"
+                                    >
+                                        Sign In
+                                    </Button>
+                                )}
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </nav>
