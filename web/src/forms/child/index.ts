@@ -1,3 +1,3 @@
-import { ChildModal } from "./child.modal";
+import { ChildModal } from './child.modal';
 
-export default ChildModal
+export default ChildModal;
