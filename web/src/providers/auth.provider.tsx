@@ -57,6 +57,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         maxAge: 60 * 60,
         sameSite: "lax",
       });
+        router.push(`/dashboard/${response.user.uid}`);
     } catch (error) {
       alert("Failed to sign in with Google");
     }

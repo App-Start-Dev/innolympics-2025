@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 
 export function Navbar() {
   const [userAccount, setUserAccount] = useState<User | null>(null);
-  const { user, logout } = useAuth();
+  const { user, logout, loginWithGoogle } = useAuth();
 
   useEffect(() => {
     setUserAccount(user);
@@ -64,8 +64,8 @@ export function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button variant="default" asChild>
-              <Link href="/auth">Start</Link>
+            <Button variant="default" onClick={()=> loginWithGoogle()}>
+              Sign in
             </Button>
           )}
         </div>

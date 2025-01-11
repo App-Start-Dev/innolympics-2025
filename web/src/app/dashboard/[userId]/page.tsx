@@ -5,7 +5,7 @@ import { getBase } from "@/actions/base.action";
 export default async function Page() {
   const token = (await cookies()).get("firebase_token")?.value;
   if (!token) {
-    redirect("/auth");
+    redirect("/");
   }
   const response = await getBase();
   console.log(response);
