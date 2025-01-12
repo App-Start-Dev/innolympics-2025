@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Poppins } from 'next/font/google';
+import { Poppins, Inter } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from '@/providers/auth.provider';
 import { Navbar } from '@/components/common/navbar.common';
@@ -8,6 +8,12 @@ import { Footer } from '@/components/common/footer.common';
 const poppins = Poppins({
     weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
     variable: '--font-poppins',
+    subsets: ['latin'],
+});
+
+const inter = Inter({
+    weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+    variable: '--font-inter',
     subsets: ['latin'],
 });
 

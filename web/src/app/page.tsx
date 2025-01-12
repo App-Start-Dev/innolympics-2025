@@ -13,11 +13,27 @@ export default function Home() {
     }, [user]);
 
     return (
-        <div className="h-svh flex flex-col items-center justify-center">
+        <div className="h-svh flex flex-col items-center justify-center gap-10">
+            <div className="flex flex-col items-center justify-center gap-2">
+                <img src="logo.svg" alt="Logo" className="w-32 h-32" />
+                <p className="text-4xl font-semibold">
+                    Agap<span className="text-primary">AI</span>
+                </p>
+            </div>
             {userAccount ? (
-                <button onClick={logout}>Sign Out</button>
+                <button
+                    className="bg-primary text-white px-24 py-3 rounded text-lg "
+                    onClick={logout}
+                >
+                    Sign Out
+                </button>
             ) : (
-                <button onClick={loginWithGoogle}>Sign In</button>
+                <button
+                    onClick={loginWithGoogle}
+                    className="bg-primary text-white px-24 py-3 rounded text-lg "
+                >
+                    Sign In
+                </button>
             )}
         </div>
     );
