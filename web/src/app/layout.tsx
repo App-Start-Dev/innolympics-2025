@@ -26,7 +26,6 @@ export default function RootLayout({
             <AuthProvider>
                 <body className="relative flex flex-col min-h-screen antialiased">
                     <main className="flex-grow px-4 w-full">{children}</main>
-                    <Footer />
                 </body>
             </AuthProvider>
         </html>

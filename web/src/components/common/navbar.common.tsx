@@ -56,7 +56,7 @@ export function Navbar() {
 
                 <div
                     ref={sidebarRef}
-                    className={`xl:hidden fixed top-0 right-0 h-screen w-64 rounded-l-3xl bg-white z-30 transform shadow-xl ${
+                    className={`fixed top-0 right-0 h-screen w-64 rounded-l-3xl bg-white z-30 transform shadow-xl ${
                         isSidebarOpen ? 'translate-x-0' : 'translate-x-full'
                     } transition-transform duration-200`}
                 >
@@ -70,26 +70,10 @@ export function Navbar() {
                         <ul className="space-y-4">
                             <li>
                                 <Link
-                                    href={`/home/${userAccount?.uid}`}
-                                    className="block text-lg font-medium text-gray-700 hover:text-blue-500"
-                                >
-                                    Home
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
                                     href={`/dashboard/${userAccount?.uid}`}
                                     className="block text-lg font-medium text-gray-700 hover:text-blue-500"
                                 >
                                     Dashboard
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
-                                    href="/knowledge-base"
-                                    className="block text-lg font-medium text-gray-700 hover:text-blue-500"
-                                >
-                                    Knowledge Base
                                 </Link>
                             </li>
                             <li>

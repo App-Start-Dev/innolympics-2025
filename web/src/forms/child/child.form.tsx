@@ -36,7 +36,7 @@ type ChildFormProps = {
         name: string;
         birthday: Date;
         sex: 'male' | 'female' | 'other';
-        asdType: 'classic' | 'aspergers' | 'pdd-nos' | 'cdd' | 'rett' | 'none';
+        asdType: 'autism' | 'aspergers' | 'pdd_nos' | 'rett' | 'cdd' | 'other';
     };
     onSubmit: (formData: FormData) => Promise<void>;
     isUpdate?: boolean;
@@ -53,19 +53,57 @@ export function ChildForm({
             name: '',
             birthday: new Date(),
             sex: 'male',
-            asdType: 'none',
+            asdType: 'other',
         },
     });
 
-    const handleSubmit = async (formData: FormData) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         setIsSubmitting(true);
-        await onSubmit(formData);
-        setIsSubmitting(false);
+        try {
+            const values = form.getValues();
+            const formData = new FormData();
+            
+            // Add ID if it's an update
+            if (isUpdate && initialData?.id) {
+                formData.append('id', initialData.id);
+            }
+            
+            // Format date in YYYY-MM-DD format without timezone conversion
+            const date = new Date(values.birthday);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const formattedDate = `${year}-${month}-${day}`;
+            
+            // Add form fields to FormData
+            formData.append('name', values.name);
+            formData.append('birthday', formattedDate);
+            formData.append('sex', values.sex);
+            formData.append('asdType', values.asdType);
+
+            // Add files if present
+            const fileInput = e.currentTarget.querySelector('input[type="file"]') as HTMLInputElement;
+            if (fileInput?.files?.length) {
+                for (let i = 0; i < fileInput.files.length; i++) {
+                    formData.append('files', fileInput.files[i]);
+                }
+            }
+
+            await onSubmit(formData);
+            if (!isUpdate) {
+                form.reset();
+            }
+        } catch (error) {
+            console.error('Form submission error:', error);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
         <Form {...form}>
-            <form action={handleSubmit} className="space-y-8">
+            <form onSubmit={handleSubmit} className="space-y-8">
                 {isUpdate && initialData?.id && (
                     <input type="hidden" name="id" value={initialData.id} />
                 )}
@@ -171,29 +209,14 @@ export function ChildForm({
                                     </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                    <SelectItem value="none">None</SelectItem>
-                                    <SelectItem value="classic">
-                                        Autistic Disorder (Classic Autism)
-                                    </SelectItem>
-                                    <SelectItem value="aspergers">
-                                        Asperger's Syndrome
-                                    </SelectItem>
-                                    <SelectItem value="pdd-nos">
-                                        Pervasive Developmental Disorder-Not
-                                        Otherwise Specified (PDD-NOS)
-                                    </SelectItem>
-                                    <SelectItem value="cdd">
-                                        Childhood Disintegrative Disorder (CDD)
-                                    </SelectItem>
-                                    <SelectItem value="rett">
-                                        Rett Syndrome
-                                    </SelectItem>
+                                    <SelectItem value="autism">Autism</SelectItem>
+                                    <SelectItem value="aspergers">Asperger's</SelectItem>
+                                    <SelectItem value="pdd_nos">PDD-NOS</SelectItem>
+                                    <SelectItem value="rett">Rett Syndrome</SelectItem>
+                                    <SelectItem value="cdd">CDD</SelectItem>
+                                    <SelectItem value="other">Other</SelectItem>
                                 </SelectContent>
                             </Select>
-                            <FormDescription>
-                                Select the type of Autism Spectrum Disorder, if
-                                applicable.
-                            </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
